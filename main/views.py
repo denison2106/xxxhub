@@ -9,7 +9,7 @@ import re
 
 
 class HomeView(ListView):
-    model = Content
+    model = XxxHub
     template_name = 'home.html'
     context_object_name = 'news'
     queryset = Content.objects.filter(status=1).order_by('-date')[:settings.RELATED_LIMIT_PAGE]
@@ -21,7 +21,7 @@ class HomeView(ListView):
 
 
 class TagView(DetailView):
-    model = Content
+    model = XxxHub
     template_name = 'tag.html'
     pk_url_kwarg = 'id'
     context_object_name = 'rows'
