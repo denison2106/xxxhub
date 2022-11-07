@@ -2,7 +2,7 @@
 {% load static %}
 {% load replace %}
 
-{% block title %}{{ rows.title }}{% endblock title %}
+{% block title %}{{ rows.title|capfirst }}{% endblock title %}
 {% block description %}{{ rows.title }}{% endblock description %}
 {% block keywords %}{{ rows.title }}{% endblock keywords %}
 
