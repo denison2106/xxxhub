@@ -83,23 +83,27 @@ def cse_tok(cx, proxy):
 
 def rasparse(arr, tag):
     i = 1
-    json = '{ "content": ['
-    for row in arr:
-        title = row['titleNoFormatting'].replace('\'', '').replace('"', '').replace('\\', '')
-        image = row['unescapedUrl'].replace("'", "%27")
-        thumb = row['tbLargeUrl'].replace("'", "%27")
-        url = row['originalContextUrl'].replace("'", "%27")
-        domain = re.match('.*\/\/(.*?)\/', url).group(1)
-        # print(i, title, image, url)
-        data = f'"title": "{title}", "image": "{image}", "thumb": "{thumb}", "url": "{url}", "domain": "{domain}"'
-        json += ' {' + data + '},'
-        if i == random.randint(1, 5):
-            con_image = image
-            con_thumb = thumb
-        i += 1
-    json += '] }'
-    content = json.replace(',]', ' ]')
-    update_tag(tag[0], con_image, con_thumb, content, 1)
+    if len(arr) > 5:
+        json = '{ "content": ['
+        for row in arr:
+            title = row['titleNoFormatting'].replace('\'', '').replace('"', '').replace('\\', '')
+            image = row['unescapedUrl'].replace("'", "%27")
+            thumb = row['tbLargeUrl'].replace("'", "%27")
+            url = row['originalContextUrl'].replace("'", "%27")
+            domain = re.match('.*\/\/(.*?)\/', url).group(1)
+            # print(i, title, image, url)
+            data = f'"title": "{title}", "image": "{image}", "thumb": "{thumb}", "url": "{url}", "domain": "{domain}"'
+            json += ' {' + data + '},'
+            if i == random.randint(1, 4):
+                con_image = image
+                con_thumb = thumb
+            i += 1
+        json += '] }'
+        content = json.replace(',]', ' ]')
+        update_tag(tag[0], con_image, con_thumb, content, 1)
+    else:
+        content = 'Min Thumbs Skip'
+        update_tag(tag[0], '', '', 2)
     return content
 
 

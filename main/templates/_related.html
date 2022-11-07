@@ -4,8 +4,8 @@
                             {% for related_row in related_rows %}
                             <div class="bg-dark col-12 col-sm-6 col-md-12 mb-2 thumb">
                                 <a href="{% url 'tag' related_row.id related_row.title|slugify %}" class="">
-                                    <img src="/static/img/loading-2.jpg" data-src="{{ related_row.thumb }}" class="w-100 lazyload" alt="{{ related_row.title }}">
-                                    <span class="m-0 thumb-title">{{ related_row.title }}</span>
+                                    <img src="/static/img/loading-2.jpg" data-src="{{ related_row.thumb }}" class="w-100 lazyload" alt="{{ related_row.title|capfirst }}">
+                                    <span class="m-0 thumb-title">{{ related_row.title|capfirst }}</span>
                                 </a>
                             </div>
                             {% endfor %}
