@@ -93,7 +93,7 @@ def rasparse(arr, tag):
         # print(i, title, image, url)
         data = f'"title": "{title}", "image": "{image}", "thumb": "{thumb}", "url": "{url}", "domain": "{domain}"'
         json += ' {' + data + '},'
-        if i == 1:
+        if i == random.randint(1, 5):
             con_image = image
             con_thumb = thumb
         i += 1

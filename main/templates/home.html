@@ -6,7 +6,7 @@
 
 {% block content %}
                     <div class="col-12 col-md-8 col-lg-9 m-0 border-end brd-color">
-                        <h1 class="text-white fs-4 mt-2 mb-2">Title</h1>
+                        <h1 class="text-white fs-4 mt-2 mb-2">Newest</h1>
 {#                        <div class="alert alert-dark text-center fs-4 p-2 ms-3 me-3 opacity-75 fw-bold main-color" role="alert">Sorry, no results!</div>#}
                         <div class="row d-flex">
                             {% for row in news %}
@@ -23,17 +23,12 @@
                         </div>
                         <div class="col-12 mt-3 pt-2 border-top border-bottom brd-color pb-3 mb-3">
                             <div class="sharethis-inline-share-buttons"></div>
-                            <h3 class="text-white fs-4 fw-light mb-2">Text</h3>
+{#                            <h3 class="text-white fs-4 fw-light mb-2">Text</h3>#}
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-4 col-lg-3 bg-dark">
-                        <div class="row cloud d-inline-block">
-                            <h3 class="text-white fs-5 fw-light mt-2 mb-0">Cloud Search Tags</h3>
-                            <div class="ms-1 mt-1">
-                                {% for tag in cloud_tags %}
-                                <span class="cloud-tag"><a href="{% url 'tag' tag.id tag.title|slugify %}">{{ tag.title }}</a></span>
-                                {% endfor %}
-                            </div>
-                        </div>
+                    {% block cloud-tags %}
+                        {% include '_cloud-tags.html' %}
+                    {%  endblock %}
                     </div>
 {% endblock content %}

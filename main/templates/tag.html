@@ -25,28 +25,15 @@
                         </div>
                         <div class="col-12 mt-3 pt-2 border-top border-bottom brd-color pb-3 mb-3">
                             <div class="sharethis-inline-share-buttons"></div>
-                            <h3 class="text-white fs-4 fw-light mb-2">Text</h3>
+{#                            <h3 class="text-white fs-4 fw-light mb-2">Text</h3>#}
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-4 col-lg-3 bg-dark">
-                        <h2 class="text-white fs-4 fw-light mt-2 mb-2">Related</h2>
-                        <div class="row text-center">
-                            {% for related_row in related_rows %}
-                            <div class="bg-dark col-12 col-sm-6 col-md-12 mb-2 thumb">
-                                <a href="{% url 'tag' related_row.id related_row.title|slugify %}" class="">
-                                    <img src="/static/img/loading-2.jpg" data-src="{{ related_row.thumb }}" class="w-100 lazyload" alt="{{ related_row.title }}">
-                                    <span class="m-0 thumb-title">{{ related_row.title }}</span>
-                                </a>
-                            </div>
-                            {% endfor %}
-                        </div>
-                        <div class="row cloud d-inline-block">
-                            <h3 class="text-white fs-5 fw-light mt-2 mb-0">Cloud Search Tags</h3>
-                            <div class="ms-1 mt-1">
-                                {% for tag in cloud_tags %}
-                                <span class="cloud-tag"><a href="{% url 'tag' tag.id tag.title|slugify %}">{{ tag.title }}</a></span>
-                                {% endfor %}
-                            </div>
-                        </div>
+                    {% block related %}
+                        {% include '_related.html' %}
+                    {%  endblock %}
+                    {% block cloud-tags %}
+                        {% include '_cloud-tags.html' %}
+                    {%  endblock %}
                     </div>
 {% endblock content %}

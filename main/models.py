@@ -4,7 +4,6 @@ from manticore.models import fields, SearchIndex
 
 class XxxHub(SearchIndex):
     title = fields.RTField()
-    date = models.DateTimeField(auto_now_add=True)
     image = models.CharField(max_length=5000, default='')
     thumb = models.CharField(max_length=5000, default='')
     cse = models.JSONField(blank=True)

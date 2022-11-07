@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{% endblock title %}</title>
-    <meta name="description" content="{% block description %}{% endblock description %}">
-    <meta name="keywords" content="{% block keywords %}{% endblock keywords %}">
+{#    <meta name="description" content="{% block description %}{% endblock description %}">#}
+{#    <meta name="keywords" content="{% block keywords %}{% endblock keywords %}">#}
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
@@ -17,10 +17,9 @@
         <nav class="navbar bg-dark border-bottom brd-color">
             <div class="container-xxl">
                 <a href="{% url 'home' %}" class="navbar-brand logo">{{ request.get_host }}</a>
-                <form class="d-flex align-items-center col-8 me-2" role="search">
-                    <input class="form-control me-2 bg-dark brd-color" type="search" placeholder="Search"
-                           aria-label="Search">
-                    <i class="bi bi-search main-color fs-4" type="submit"></i>
+                <form class="d-flex align-items-center col-8 me-2" role="search" action="/q/" method="get">
+                    <input class="form-control me-2 bg-dark brd-color" name="q" type="search" placeholder="Search" aria-label="Search">
+                    <button class="bi bi-search main-color fs-4 sbutton" type="submit"></button>
                 </form>
             </div>
         </nav>
@@ -41,7 +40,7 @@
                 <p class="text-danger fw-normal m-0 fs-5"><i class="bi bi-exclamation-octagon-fill"></i> 18+</p>
             </div>
             <div class="row text-center ftr fs-6 fw-light pb-3">
-                <div class="col-6 col-md-4"><a href="#">site</a></div>
+{#                <div class="col-6 col-md-4"><a href="#">site</a></div>#}
             </div>
             <div class="row text-center ftr fs-6 fw-light pb-2">
                 <div class="col-6 col-md-3 col-lg-3"><a href="/dmca/" rel="nofollow">DMCA</a></div>

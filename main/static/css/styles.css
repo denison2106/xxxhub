@@ -41,6 +41,11 @@ body {
     color: var(--main-color);
 }
 
+.sbutton{
+    background: none !important;
+    border: none !important;
+}
+
 .brd-color {
     border-color: var(--main-color) !important;
 }
