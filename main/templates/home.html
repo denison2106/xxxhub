@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load replace %}
+
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+                    <div class="col-12 col-md-8 col-lg-9 m-0 border-end brd-color">
+                        <h1 class="text-white fs-4 mt-2 mb-2">Title</h1>
+{#                        <div class="alert alert-dark text-center fs-4 p-2 ms-3 me-3 opacity-75 fw-bold main-color" role="alert">Sorry, no results!</div>#}
+                        <div class="row d-flex">
+                            {% for row in news %}
+                            <div class="bg-dark col-6 col-sm-4 col-md-6 col-lg-4 col-xl-3 mb-2 thumb">
+                                <a href="{% url 'tag' row.pk row.title|slugify %}" class="thumb-link text-decoration-none" data-title="{{ row.title }}">
+                                    <img src="{% static 'img/loading.jpg' %}" data-src="{{ row.thumb }}" class="lazyload" alt="{{ row.title }}">
+                                    <div class="col-title">
+                                        <h6 class="m-0 thumb-title">{{ row.title }}</h6>
+                                        <p class="fw-light text-white domain-title m-0">{{ row.date }}</p>
+                                    </div>
+                                </a>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-12 mt-3 pt-2 border-top border-bottom brd-color pb-3 mb-3">
+                            <div class="sharethis-inline-share-buttons"></div>
+                            <h3 class="text-white fs-4 fw-light mb-2">Text</h3>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-4 col-lg-3 bg-dark">
+                        <div class="row cloud d-inline-block">
+                            <h3 class="text-white fs-5 fw-light mt-2 mb-0">Cloud Search Tags</h3>
+                            <div class="ms-1 mt-1">
+                                {% for tag in cloud_tags %}
+                                <span class="cloud-tag"><a href="{% url 'tag' tag.id tag.title|slugify %}">{{ tag.title }}</a></span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+{% endblock content %}

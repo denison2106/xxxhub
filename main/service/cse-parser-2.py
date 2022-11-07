@@ -1,0 +1,182 @@
+import random
+
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from extension import proxies
+from twocaptcha import TwoCaptcha
+import requests
+import urllib.request
+import time
+import datetime
+import re
+import json
+import numpy as np
+import psycopg2
+import multiprocessing
+from bs4 import BeautifulSoup
+from xxxhub import settings
+
+
+conn = psycopg2.connect(
+    dbname=settings.DATABASES['default']['NAME'],
+    user=settings.DATABASES['default']['USER'],
+    password=settings.DATABASES['default']['PASSWORD'],
+    host=settings.DATABASES['default']['HOST']
+)
+
+cursor = conn.cursor()
+
+
+def get_tag(limit=100):
+    cursor.execute(f"SELECT * FROM main_content WHERE status=0 ORDER BY id DESC LIMIT {limit}")
+    return cursor.fetchall()
+
+
+def update_tag(id, image, thumb, content, status):
+    if status == 1:
+        sql = f"UPDATE main_content SET date='{datetime.datetime.now()}', image = '{image}', thumb = '{thumb}', cse = '{content}', status = {status} WHERE id = '{id}'"
+    else:
+        sql = f"UPDATE main_content SET status = {status} WHERE id = '{id}'"
+    cursor.execute(sql)
+    conn.commit()
+
+
+def recaptcha(query, cx, proxy):
+    chrome_options = webdriver.ChromeOptions()
+    proxies_extension = proxies(proxy['user'], proxy['password'], proxy['ip'], proxy['port'])
+    chrome_options.add_extension(proxies_extension)
+    chrome_options.add_argument("--headless=chrome")
+
+    # navigator = webdriver.Chrome('E:/chromedriver.exe')
+    navigator = webdriver.Chrome('E:/chromedriver.exe', options=chrome_options)
+    link = f'https://cse.google.com/cse?cx={cx}#gsc.tab=0&gsc.q={query}'
+    navigator.get(link)
+    url_captcha = navigator.find_element(By.XPATH, "//*[@title='reCAPTCHA']").get_attribute('src')
+    site_key = re.search('k=(.*?)&', url_captcha).group(1)
+    solver = TwoCaptcha('')
+    proxy = {
+        'type': 'HTTPS',
+        'uri': f"{proxy['user']}:{proxy['password']}@{proxy['ip']}:{proxy['port']}"
+    }
+    result = solver.recaptcha(sitekey=site_key, url=link, proxy=proxy)
+    res_captcha = result['code']
+
+    if res_captcha != 0:
+        try:
+            navigator.execute_script(f"document.getElementById('g-recaptcha-response').innerHTML = '{res_captcha}'")
+            time.sleep(1)
+            navigator.execute_script(f"___grecaptcha_cfg.clients[0].W.W.callback('{res_captcha}');")
+            time.sleep(10)
+        except Exception as e:
+            pass
+
+
+def cse_tok(cx, proxy):
+    data = dict()
+    r = requests.get(f'https://cse.google.com/cse.js?hpg=1&cx={cx}', proxies=proxy['http'])
+    soup = BeautifulSoup(r.text, 'lxml')
+    # cse_token = re.search('cse_token": "(.*)"', r.text, re.MULTILINE)
+    data['cse_token'] = re.search('cse_token": "(.*)"', r.text).group(1)
+    data['cselibv'] = re.search('cselibVersion": "(.*)"', r.text).group(1)
+    return data
+
+
+def rasparse(arr, tag):
+    i = 1
+    json = '{ "content": ['
+    for row in arr:
+        title = row['titleNoFormatting'].replace('\'', '').replace('"', '').replace('\\', '')
+        image = row['unescapedUrl'].replace("'", "%27")
+        thumb = row['tbLargeUrl'].replace("'", "%27")
+        url = row['originalContextUrl'].replace("'", "%27")
+        domain = re.match('.*\/\/(.*?)\/', url).group(1)
+        # print(i, title, image, url)
+        data = f'"title": "{title}", "image": "{image}", "thumb": "{thumb}", "url": "{url}", "domain": "{domain}"'
+        json += ' {' + data + '},'
+        if i == 1:
+            con_image = image
+            con_thumb = thumb
+        i += 1
+    json += '] }'
+    content = json.replace(',]', ' ]')
+    update_tag(tag[0], con_image, con_thumb, content, 1)
+    return content
+
+
+def cse_pars(tag, cx, proxy):
+    cse_token = cse_tok(cx, proxy)
+    data = cse_token
+    query = f'{tag[1]}'
+    as_oq = 'porn+porno'
+    hl = 'ru'
+    gl = 'us'
+    cse_token = data['cse_token']
+    cselibv = data['cselibv']
+    searchtype = 'image'
+    url = f'https://cse.google.com/cse/element/v1?rsz=20&num=20&hl={hl}&source=gcsc&gss=.com&cselibv={cselibv}' \
+          f'&searchtype={searchtype}&cx={cx}&q={query}&safe=off&cse_tok={cse_token}&lr=&cr=&gl={gl}&filter=0' \
+          f'&sort=&as_oq={as_oq}&as_sitesearch=&exp=csqr,cc,4861326&imgsz=medium&cseclient=hosted-page-client' \
+          f'&callback=google.search.cse.api1359'
+    r = requests.get(url, proxies=proxy['http'])
+    url_solved = f'https://cse.google.com/cse?cx={cx}#gsc.tab=0&gsc.q={query}'
+    # print(url_solved.replace(" ", "%20"))
+
+    if re.search('error":\{(.+)\}', r.text, re.MULTILINE | re.DOTALL):
+        recaptcha(query, cx, proxy)
+        print('ReCaptcha')
+    else:
+        if re.search('results": \[(.+)\]', r.text, re.MULTILINE|re.DOTALL):
+            arr = re.search('results": \[(.+)\]', r.text, re.MULTILINE|re.DOTALL).group(1)
+            res = f'[{arr}]'
+            # print(res)
+            return rasparse(json.loads(res), tag)
+        else:
+            update_tag(tag[0], '', '', 2)
+            return 'Skip'
+
+
+proxy_ip = [
+    '45.11.20.240',
+    '188.130.142.101',
+    '109.248.55.203',
+    '45.87.252.124',
+    '46.8.106.138',
+    '46.8.57.191',
+    '109.248.142.51',
+    '185.181.245.75',
+    '46.8.11.101',
+    '46.8.23.236',
+    '92.119.193.16',
+    '45.11.20.3',
+    '45.15.73.169',
+    '188.130.143.222',
+    '109.248.205.8',
+    '188.130.142.249',
+    '109.248.128.218',
+    '46.8.106.70',
+    '46.8.223.3',
+    '188.130.137.13',
+]
+
+
+def res(tag):
+    cx = '2532cdff8c70b490c'
+    number_proc = int(multiprocessing.current_process().name.replace('SpawnPoolWorker-', ''))
+    proxy = dict()
+    proxy['ip'] = proxy_ip[number_proc-1]
+    proxy['port'] = '5500'
+    proxy['user'] = 'gFRKCO'
+    proxy['password'] = 'OP13iimKcj'
+    proxy['http'] = {'https': f"http://{proxy['user']}:{proxy['password']}@{proxy['ip']}:{proxy['port']}"}
+    result = cse_pars(tag, cx, proxy)
+    print(number_proc, proxy['ip'], tag[1], result)
+    time.sleep(45)
+
+tags_list = get_tag(5000)
+
+if __name__ == '__main__':
+    count_proc = len(proxy_ip)
+    with multiprocessing.Pool(count_proc) as p:
+        p.map(res, tags_list)
+
+
