@@ -82,8 +82,10 @@ def cse_tok(cx, proxy):
 
 
 def rasparse(arr, tag):
-    i = 1
+    ci = random.randint(1, 4)
+    time.sleep(1)
     if len(arr) > 5:
+        i = 1
         json = '{ "content": ['
         for row in arr:
             title = row['titleNoFormatting'].replace('\'', '').replace('"', '').replace('\\', '')
@@ -94,7 +96,7 @@ def rasparse(arr, tag):
             # print(i, title, image, url)
             data = f'"title": "{title}", "image": "{image}", "thumb": "{thumb}", "url": "{url}", "domain": "{domain}"'
             json += ' {' + data + '},'
-            if i == random.randint(1, 4):
+            if i == ci:
                 con_image = image
                 con_thumb = thumb
             i += 1
@@ -103,7 +105,7 @@ def rasparse(arr, tag):
         update_tag(tag[0], con_image, con_thumb, content, 1)
     else:
         content = 'Min Thumbs Skip'
-        update_tag(tag[0], '', '', 2)
+        update_tag(tag[0], '', '',  '', 2)
     return content
 
 
@@ -135,7 +137,7 @@ def cse_pars(tag, cx, proxy):
             # print(res)
             return rasparse(json.loads(res), tag)
         else:
-            update_tag(tag[0], '', '', 2)
+            update_tag(tag[0], '', '', '', 2)
             return 'Skip'
 
 

@@ -1,3 +1,5 @@
+import random
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from extension import proxies
@@ -26,13 +28,13 @@ cursor = conn.cursor()
 
 
 def get_tag(limit=100):
-    cursor.execute(f"SELECT * FROM main_content WHERE status=0 LIMIT {limit}")
+    cursor.execute(f"SELECT * FROM main_content WHERE status=0 ORDER BY id DESC LIMIT {limit}")
     return cursor.fetchall()
 
 
-def update_tag(id, image, content, status):
+def update_tag(id, image, thumb, content, status):
     if status == 1:
-        sql = f"UPDATE main_content SET date='{datetime.datetime.now()}', image = '{image}', cse = '{content}', status = {status} WHERE id = '{id}'"
+        sql = f"UPDATE main_content SET date='{datetime.datetime.now()}', image = '{image}', thumb = '{thumb}', cse = '{content}', status = {status} WHERE id = '{id}'"
     else:
         sql = f"UPDATE main_content SET status = {status} WHERE id = '{id}'"
     cursor.execute(sql)
@@ -80,22 +82,30 @@ def cse_tok(cx, proxy):
 
 
 def rasparse(arr, tag):
-    i = 1
-    json = '{ "content": ['
-    for row in arr:
-        title = row['titleNoFormatting'].replace('\'', '').replace('"', '').replace('\\', '')
-        image = row['unescapedUrl'].replace("'", "%27")
-        url = row['originalContextUrl'].replace("'", "%27")
-        domain = re.match('.*\/\/(.*?)\/', url).group(1)
-        # print(i, title, image, url)
-        data = f'"title": "{title}", "image": "{image}", "url": "{url}", "domain": "{domain}"'
-        json += ' {' + data + '},'
-        if i == 1:
-            con_image = image
-        i += 1
-    json += '] }'
-    content = json.replace(',]', ' ]')
-    update_tag(tag[0], con_image, content, 1)
+    ci = random.randint(1, 4)
+    time.sleep(1)
+    if len(arr) > 5:
+        i = 1
+        json = '{ "content": ['
+        for row in arr:
+            title = row['titleNoFormatting'].replace('\'', '').replace('"', '').replace('\\', '')
+            image = row['unescapedUrl'].replace("'", "%27")
+            thumb = row['tbLargeUrl'].replace("'", "%27")
+            url = row['originalContextUrl'].replace("'", "%27")
+            domain = re.match('.*\/\/(.*?)\/', url).group(1)
+            # print(i, title, image, url)
+            data = f'"title": "{title}", "image": "{image}", "thumb": "{thumb}", "url": "{url}", "domain": "{domain}"'
+            json += ' {' + data + '},'
+            if i == ci:
+                con_image = image
+                con_thumb = thumb
+            i += 1
+        json += '] }'
+        content = json.replace(',]', ' ]')
+        update_tag(tag[0], con_image, con_thumb, content, 1)
+    else:
+        content = 'Min Thumbs Skip'
+        update_tag(tag[0], '', '',  '', 2)
     return content
 
 
@@ -103,13 +113,14 @@ def cse_pars(tag, cx, proxy):
     cse_token = cse_tok(cx, proxy)
     data = cse_token
     query = f'{tag[1]}'
-    as_oq = 'porn'
+    as_oq = 'porn+porno'
     hl = 'ru'
+    gl = 'us'
     cse_token = data['cse_token']
     cselibv = data['cselibv']
     searchtype = 'image'
     url = f'https://cse.google.com/cse/element/v1?rsz=20&num=20&hl={hl}&source=gcsc&gss=.com&cselibv={cselibv}' \
-          f'&searchtype={searchtype}&cx={cx}&q={query}&safe=off&cse_tok={cse_token}&lr=&cr=&gl=&filter=0' \
+          f'&searchtype={searchtype}&cx={cx}&q={query}&safe=off&cse_tok={cse_token}&lr=&cr=&gl={gl}&filter=0' \
           f'&sort=&as_oq={as_oq}&as_sitesearch=&exp=csqr,cc,4861326&imgsz=medium&cseclient=hosted-page-client' \
           f'&callback=google.search.cse.api1359'
     r = requests.get(url, proxies=proxy['http'])
@@ -126,7 +137,7 @@ def cse_pars(tag, cx, proxy):
             # print(res)
             return rasparse(json.loads(res), tag)
         else:
-            update_tag(tag[0], '', '', 2)
+            update_tag(tag[0], '', '', '', 2)
             return 'Skip'
 
 
@@ -136,21 +147,26 @@ def res(i, tag, cx, proxy):
 
 
 proxy_ip = [
-    # '45.11.20.240',
+    '45.11.20.240',
     '188.130.142.101',
-    '109.248.55.203',
-    '45.87.252.124',
-    '46.8.106.138',
+    # '109.248.55.203',
+    # '45.87.252.124',
+    # '46.8.106.138',
     '46.8.57.191',
     '109.248.142.51',
-    '185.181.245.75',
+    # '185.181.245.75',
     '46.8.11.101',
     # '46.8.23.236',
     '92.119.193.16',
-    '45.11.20.3',
+    # '45.11.20.3',
     '45.15.73.169',
-    '188.130.143.222',
+    # '188.130.143.222',
     '109.248.205.8',
+    '188.130.142.249',
+    # '109.248.128.218',
+    '46.8.106.70',
+    '46.8.223.3',
+    '188.130.137.13',
 ]
 
 
