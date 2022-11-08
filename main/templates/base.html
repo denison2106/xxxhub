@@ -17,7 +17,7 @@
     <div class="header">
         <nav class="navbar bg-dark border-bottom brd-color">
             <div class="container-xxl">
-                <a href="{% url 'home' %}" class="navbar-brand logo">{{ request.get_host|upper }}</a>
+                <a href="{% fullurl 'home' %}" class="navbar-brand logo">{{ request.get_host|upper }}</a>
                 <form class="d-flex align-items-center col-8 me-2" role="search" action="/q/" method="get">
                     <input class="form-control me-2 bg-dark brd-color" name="q" type="search" placeholder="Search" aria-label="Search">
                     <button class="bi bi-search main-color fs-4 sbutton" type="submit"></button>
