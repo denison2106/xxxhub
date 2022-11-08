@@ -35,8 +35,10 @@ class TagView(DetailView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        options = 'OPTION ranker=sph04, max_matches=5'
-        context['related_rows'] = XxxHub.objects.raw(f"SELECT * FROM main_xxxhub WHERE MATCH('\"{self.object.title}\"/0.1') AND id<>{self.object.pk} AND status=1 LIMIT 5 {options}")
+        options = 'OPTION ranker=sph04, max_matches=8'
+        context['description'] = f''
+        # context['keywords'] = ''
+        context['related_rows'] = XxxHub.objects.raw(f"SELECT * FROM main_xxxhub WHERE MATCH('\"{self.object.title}\"/0.1') AND id<>{self.object.pk} AND status=1 LIMIT 8 {options}")
         context['cloud_tags'] = XxxHub.objects.raw(f"SELECT * FROM main_xxxhub WHERE id < {self.object.pk} ORDER BY id DESC LIMIT 10")
         return context
 

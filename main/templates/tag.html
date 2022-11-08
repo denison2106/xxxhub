@@ -3,8 +3,8 @@
 {% load replace %}
 
 {% block title %}{{ rows.title|capfirst }}{% endblock title %}
-{% block description %}{{ rows.title }}{% endblock description %}
-{% block keywords %}{{ rows.title }}{% endblock keywords %}
+{% block description %}{% for row in rows.cse.content %}{% if forloop.counter <= 2 %}{{ row.title|lower|capfirst|replace_title }}. {% endif %}{% endfor %}{% endblock description %}
+{% block keywords %}{% for row in rows.cse.content %}{% if forloop.counter <= 2 %}{{ row.title|lower|replace_keywords }} {% endif %}{% endfor %}{% endblock keywords %}
 
 {% block content %}
                     <div class="col-12 col-md-8 col-lg-9 m-0 border-end brd-color">
