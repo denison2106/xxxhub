@@ -16,6 +16,7 @@ class HomeView(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['title'] = settings.HOME_TITLE
         context['cloud_tags'] = XxxHub.objects.raw(f"SELECT * FROM main_xxxhub ORDER BY RAND() LIMIT 20")
         return context
 
