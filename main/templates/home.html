@@ -12,7 +12,7 @@
                             {% for row in news %}
                             <div class="bg-dark col-6 col-sm-4 col-md-6 col-lg-4 col-xl-3 mb-2 thumb">
                                 <a href="{% url 'tag' row.pk row.title|slugify %}" class="thumb-link text-decoration-none" data-title="{{ row.title }}">
-                                    <img src="{% static 'img/loading.jpg' %}" data-src="{{ row.thumb }}" class="lazyload" alt="{{ row.title }}">
+                                    <img src="{% static 'img/loading.jpg' %}" data-src="{{ row.image }}" class="lazyload" alt="{{ row.title }}">
                                     <div class="col-title">
                                         <h6 class="m-0 thumb-title">{{ row.title }}</h6>
                                         <p class="fw-light text-white domain-title m-0">{{ row.date }}</p>

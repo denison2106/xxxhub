@@ -352,6 +352,7 @@
                                 T(t, n)
                             } else {
                                 t.src = n
+                                t.onerror = function() { t.onerror = null; t.src = "/static/img/loading.jpg"; }
                             }
                         }
                         if (r && (s || l)) {
