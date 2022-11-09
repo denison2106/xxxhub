@@ -12,7 +12,7 @@
                         <div class="row d-flex">
                             {% for row in news %}
                             <div class="bg-dark col-6 col-sm-4 col-md-6 col-lg-4 col-xl-3 mb-2 thumb">
-                                <a href="{% fullurl 'tag' row.pk row.title|slugify %}" class="thumb-link text-decoration-none" data-title="{{ row.title|capfirst }}">
+                                <a href="{% fullurl 'tag' row.pk row.title|replace:" |-" %}" class="thumb-link text-decoration-none" data-title="{{ row.title|capfirst }}">
                                     <img src="{% static 'img/loading.jpg' %}" data-src="{{ row.image }}" class="lazyload" alt="{{ row.title|capfirst }}">
                                     <div class="col-title">
                                         <h6 class="m-0 thumb-title">{{ row.title|capfirst }}</h6>
