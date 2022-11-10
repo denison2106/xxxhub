@@ -5,7 +5,7 @@
                             <h3 class="text-white fs-5 fw-light mt-2 mb-0">Cloud Search Tags</h3>
                             <div class="ms-1 mt-1">
                                 {% for tag in cloud_tags %}
-                                <span class="cloud-tag"><a href="{% fullurl 'tag' tag.id tag.title|replace:" |-" %}" title="{{ tag.title }}">{{ tag.title }}</a></span>
+                                <span class="cloud-tag"><a href="{% fullurl 'tag' tag.id tag.title|lower|replace:" |-" %}" title="{{ tag.title }}">{{ tag.title }}</a></span>
                                 {% endfor %}
                             </div>
                         </div>

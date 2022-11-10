@@ -78,7 +78,7 @@ class PostSitemap(Sitemap):
     #     return item.datetime
 
     def location(self, item):
-        url = f'/watch/{item.pk}/{item.title.replace(" ", "-")}/'
+        url = f'/watch/{item.pk}/{item.title.replace(" ", "-").lower()}/'
         return url
 
 

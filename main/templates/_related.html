@@ -5,7 +5,7 @@
                         <div class="row text-center">
                             {% for related_row in related_rows %}
                             <div class="bg-dark col-6 col-sm-6 col-md-12 mb-2 thumb">
-                                <a href="{% fullurl 'tag' related_row.id related_row.title|replace:" |-" %}" class="rel">
+                                <a href="{% fullurl 'tag' related_row.id related_row.title|lower|replace:" |-" %}" class="rel">
                                     <img src="/static/img/loading-2.jpg" data-src="{{ related_row.image }}" class="w-100 lazyload" alt="{{ related_row.title|capfirst }}">
                                     <span class="m-0 thumb-title">{{ related_row.title|capfirst }}</span>
                                 </a>
