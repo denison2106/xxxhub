@@ -3,6 +3,7 @@ from .models import Content, XxxHub
 from django.conf import settings
 from django.shortcuts import redirect
 from django.views.generic import ListView, DetailView
+from django.contrib.sitemaps import Sitemap
 
 import json
 import re
@@ -64,6 +65,21 @@ class SearchView(ListView):
             f"SELECT * FROM {settings.MANTICORE_DATABASE_NAME} "
             f"WHERE {where} "
             f"LIMIT {settings.RELATED_LIMIT_PAGE} {options}")
+
+
+class PostSitemap(Sitemap):
+    changefreq = 'weekly'
+    priority = 0.9
+
+    def items(self):
+        return XxxHub.objects.filter(status=1).order_by('-pk')
+
+    # def lastmod(self, item):
+    #     return item.datetime
+
+    def location(self, item):
+        url = f'/watch/{item.pk}/{item.title.replace(" ", "-")}/'
+        return url
 
 
 def search_people(request):

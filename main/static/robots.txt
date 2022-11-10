@@ -3,3 +3,4 @@ Disallow: /privacy/
 Disallow: /18-usc-2257/
 Disallow: /contact/
 Disallow: /dmca/
+Sitemap: /sitemap.xml

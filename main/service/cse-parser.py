@@ -171,7 +171,7 @@ proxy_ip = [
 
 
 
-tags_list = get_tag(5000)
+tags_list = get_tag(20000)
 count_tags = int(len(tags_list)/len(proxy_ip)+1)
 tagsm = np.array_split(tags_list, count_tags)
 
