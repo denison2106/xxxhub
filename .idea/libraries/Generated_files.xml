@@ -2,10 +2,11 @@
   <library name="Generated files" type="javaScript">
     <properties>
       <sourceFilesUrls>
-        <item url="file://$PROJECT_DIR$/main/static/lazyload.min.js" />
+        <item url="file://$PROJECT_DIR$/main/service/background.min.js" />
       </sourceFilesUrls>
     </properties>
     <CLASSES>
+      <root url="file://$PROJECT_DIR$/main/service/background.min.js" />
       <root url="file://$PROJECT_DIR$/main/static/js/lazyload.min.js" />
     </CLASSES>
     <JAVADOC />

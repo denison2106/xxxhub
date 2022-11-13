@@ -23,44 +23,45 @@ def set_tag(tag):
     cursor.execute(sql, val)
     conn.commit()
 
-proxy_ip = [
-    # '45.11.20.240',
-    '188.130.142.101',
-    '109.248.55.203',
-    '45.87.252.124',
-    '46.8.106.138',
-    '46.8.57.191',
-    '109.248.142.51',
-    '185.181.245.75',
-    '46.8.11.101',
-    '46.8.23.236',
-    '92.119.193.16',
-    '45.11.20.3',
-    '45.15.73.169',
-    '188.130.143.222',
-    '109.248.205.8',
-    '188.130.142.249',
-    '109.248.128.218',
-    '46.8.106.70',
-    '46.8.223.3',
-    '188.130.137.13',
-]
 
 src = 'porn'
-id_tag_start = 4952002
-id_tag_end = 4900000
+id_tag_start = 4_900_000
+id_tag_end = 4_700_000
 
+def proxy_len():
+    file_proxy = open("../proxy.txt", "r")
+    i = 0
+    while True:
+        line = file_proxy.readline()
+        if not line or '#' in line:
+            break
+        i += 1
+    return i
+
+
+def proxy_pars(number):
+    file_proxy = open("../proxy.txt", "r")
+    proxy = dict()
+    i = 0
+    while True:
+        line = file_proxy.readline()
+        if not line or '#' in line:
+            break
+        if number == i:
+            proxy_line = re.search('^(.+?):(.+?)@(.+?):(.+?)$', line)
+            proxy['user'] = proxy_line.group(1)
+            proxy['password'] = proxy_line.group(2)
+            proxy['ip'] = proxy_line.group(3)
+            proxy['port'] = proxy_line.group(4)
+            proxy['http'] = {'https': f"http://{proxy['user']}:{proxy['password']}@{proxy['ip']}:{proxy['port']}"}
+        i += 1
+    file_proxy.close
+    return proxy
 
 def parse(id):
 
     number_proc = int(multiprocessing.current_process().name.replace('SpawnPoolWorker-', ''))
-    proxy = dict()
-    proxy['ip'] = proxy_ip[number_proc-1]
-    proxy['port'] = '5500'
-    proxy['user'] = 'gFRKCO'
-    proxy['password'] = 'OP13iimKcj'
-    proxy['http'] = {'https': f"http://{proxy['user']}:{proxy['password']}@{proxy['ip']}:{proxy['port']}"}
-
+    proxy = proxy_pars(number_proc-1)
     src = 'porn'
     link_parse = f'http://www.shufflesex.com/tags/{id}/{src}'
     url = link_parse
@@ -79,7 +80,7 @@ def parse(id):
     # trend = links.find_all('a')
 
 if __name__ == '__main__':
-    count_proc = len(proxy_ip)
+    count_proc = proxy_len()
     with multiprocessing.Pool(count_proc) as p:
         p.map(parse, range(id_tag_start, id_tag_end, -1))
 

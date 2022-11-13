@@ -10,7 +10,6 @@ import time
 import datetime
 import re
 import json
-import numpy as np
 import psycopg2
 import multiprocessing
 from bs4 import BeautifulSoup

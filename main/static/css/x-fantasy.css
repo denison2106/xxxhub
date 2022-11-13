@@ -1,11 +1,11 @@
 :root {
-    --body-bg: #383d42;
-    --content-bg: #212529;
-    --main-color: #0a53be;
-    --main-color-hover: #0a53be;
-    --main-color-light: #1f6edc;
+    --body-bg: #151004;
+    --content-bg: #1f1b04;
+    --main-color: #be640a;
+    --main-color-hover: #dc7c23;
+    --main-color-light: #cc6c11;
     --text-color: #dedede;
-    --ftr-text-color: #b7b7b7;
+    --ftr-text-color: #a2a2a2;
     --ftr-link-color: #b7b7b7;
     --ftr-link-color-hover: #cbcbcb;
 }

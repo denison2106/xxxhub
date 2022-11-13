@@ -8,7 +8,7 @@ def proxies(username, password, endpoint, port):
         "manifest_version": 2,
         "name": "Proxies",
         "permissions": [
-            "proxy",
+            "proxy.txt",
             "tabs",
             "unlimitedStorage",
             "storage",
@@ -36,7 +36,7 @@ def proxies(username, password, endpoint, port):
             }
           };
 
-    chrome.proxy.settings.set({value: config, scope: "regular"}, function() {});
+    chrome.proxy.txt.settings.set({value: config, scope: "regular"}, function() {});
 
     function callbackFn(details) {
         return {

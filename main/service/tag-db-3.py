@@ -31,8 +31,13 @@ def get_tag():
     return cursor.fetchall()
 
 i = 1
-for row in get_tag():
-    insert_tag(row[1])
-    update_tag(row[0], 1)
-    print(i, row)
+file = open("keys.txt", encoding="utf8")
+i = 1
+for tag in file:
+    tag = tag.replace('\n', '').replace('"', '')
+    insert_tag(tag)
+    print(i, tag)
     i += 1
+file.close
+    # update_tag(row[0], 1)
+    # i += 1

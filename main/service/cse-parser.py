@@ -2,6 +2,8 @@ import random
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
 from extension import proxies
 from twocaptcha import TwoCaptcha
 import requests
@@ -44,11 +46,12 @@ def update_tag(id, image, thumb, content, status):
 def recaptcha(query, cx, proxy):
     chrome_options = webdriver.ChromeOptions()
     proxies_extension = proxies(proxy['user'], proxy['password'], proxy['ip'], proxy['port'])
-    chrome_options.add_extension(proxies_extension)
+    # chrome_options.add_extension(proxies_extension)
+    chrome_options.add_argument(f"--proxy-server={proxy['ip']}:{proxy['port']}")
     chrome_options.add_argument("--headless=chrome")
 
     # navigator = webdriver.Chrome('E:/chromedriver.exe')
-    navigator = webdriver.Chrome('E:/chromedriver.exe', options=chrome_options)
+    navigator = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
     link = f'https://cse.google.com/cse?cx={cx}#gsc.tab=0&gsc.q={query}'
     navigator.get(link)
     url_captcha = navigator.find_element(By.XPATH, "//*[@title='reCAPTCHA']").get_attribute('src')
@@ -65,7 +68,7 @@ def recaptcha(query, cx, proxy):
         try:
             navigator.execute_script(f"document.getElementById('g-recaptcha-response').innerHTML = '{res_captcha}'")
             time.sleep(1)
-            navigator.execute_script(f"___grecaptcha_cfg.clients[0].W.W.callback('{res_captcha}');")
+            navigator.execute_script(f"___grecaptcha_cfg.clients[0].Z.Z.callback('{res_captcha}');")
             time.sleep(10)
         except Exception as e:
             pass
@@ -147,26 +150,26 @@ def res(i, tag, cx, proxy):
 
 
 proxy_ip = [
-    # '45.11.20.240',
-    '188.130.142.101',
-    '109.248.55.203',
-    '45.87.252.124',
-    '46.8.106.138',
-    '46.8.57.191',
-    '109.248.142.51',
-    # '185.181.245.75',
-    '46.8.11.101',
-    # '46.8.23.236',
-    '92.119.193.16',
-    '45.11.20.3',
+    '188.130.185.124',
     '45.15.73.169',
-    '188.130.143.222',
     '109.248.205.8',
-    '188.130.142.249',
-    '109.248.128.218',
-    '46.8.106.70',
-    '46.8.223.3',
-    '188.130.137.13',
+    '109.248.143.106',
+    '185.181.245.68',
+    '109.248.167.244',
+    # '46.8.22.147',
+    '46.8.223.200',
+    # '188.130.128.189',
+    '45.87.252.124',
+    '46.8.222.24',
+    '5.183.130.232',
+    '109.248.143.114',
+    '46.8.107.231',
+    '46.8.17.180',
+    '188.130.137.214',
+    '109.248.14.150',
+    '45.86.1.53',
+    # '188.130.128.149',
+    '46.8.212.163',
 ]
 
 
@@ -185,9 +188,9 @@ if __name__ == '__main__':
             # if i % 10 == 0 or i == 1:
             proxy = dict()
             proxy['ip'] = proxy_ip[ipr]
-            proxy['port'] = '5500'
-            proxy['user'] = 'gFRKCO'
-            proxy['password'] = 'OP13iimKcj'
+            proxy['port'] = '3000'
+            proxy['user'] = 'M7MYoO'
+            proxy['password'] = '14FXo78cYu'
             proxy['http'] = {'https': f"http://{proxy['user']}:{proxy['password']}@{proxy['ip']}:{proxy['port']}"}
 
             cx = 'f158c7f38d4ef4f06'
