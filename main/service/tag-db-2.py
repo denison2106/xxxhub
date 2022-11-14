@@ -27,7 +27,7 @@ def update_tag(id, status):
 
 def get_tag():
     # cursor.execute("SELECT * FROM main_tags WHERE status=0 AND LENGTH(title)>15 ORDER BY LENGTH(title) DESC LIMIT 2000")
-    cursor.execute("SELECT * FROM main_tags WHERE status=0 AND LENGTH(title)>15 ORDER BY id ASC LIMIT 10000")
+    cursor.execute("SELECT * FROM main_tags WHERE status=0 AND LENGTH(title)>15 ORDER BY id ASC LIMIT 5000")
     return cursor.fetchall()
 
 i = 1
