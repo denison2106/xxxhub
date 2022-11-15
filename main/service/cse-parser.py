@@ -16,14 +16,21 @@ import numpy as np
 import psycopg2
 import multiprocessing
 from bs4 import BeautifulSoup
-from xxxhub import settings
+# from xxxhub import settings
 
+
+# conn = psycopg2.connect(
+#     dbname=settings.DATABASES['default']['NAME'],
+#     user=settings.DATABASES['default']['USER'],
+#     password=settings.DATABASES['default']['PASSWORD'],
+#     host=settings.DATABASES['default']['HOST']
+# )
 
 conn = psycopg2.connect(
-    dbname=settings.DATABASES['default']['NAME'],
-    user=settings.DATABASES['default']['USER'],
-    password=settings.DATABASES['default']['PASSWORD'],
-    host=settings.DATABASES['default']['HOST']
+    dbname='xxxhub',
+    user='candyhub',
+    password='oCrO5LiLpJIjvfJ',
+    host='127.0.0.1'
 )
 
 cursor = conn.cursor()
