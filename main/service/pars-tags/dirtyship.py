@@ -63,7 +63,7 @@ def parse():
     number_proc = int(multiprocessing.current_process().name.replace('SpawnPoolWorker-', ''))
     proxy = proxy_pars(number_proc-1)
     src = 'porn'
-    link_parse = f'https://dirtyship.com/page/{id}/'
+    link_parse = f'https://www.playvids.com/?page={id}'
     url = link_parse
     headers = {
         'User-Agent': 'Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots)',
@@ -81,17 +81,17 @@ def parse():
 
 
 i = 1
-while i <= 260:
+while i <= 1:
     headers = {
         'User-Agent': 'Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots)',
     }
-    url = f'https://porntn.com/latest-updates/{i}/'
+    url = f'https://www.porntrex.com/latest-updates/{i}/'
     r = requests.get(url, headers=headers)
     soup = BeautifulSoup(r.text, 'lxml')
-    tegs = soup.find_all('div', class_='item')
+    tegs = soup.find_all('div', class_='thumbs_rotate')
     for tag in tegs:
-        tt = re.search('title="(.+?)"', str(tag)).group(1).strip()
+        tt = re.search('">(.+?)</a>', str(tag)).group(1).strip()
         print(i, tt)
-        set_tag(tt)
+        # set_tag(tt)
     i += 1
-    time.sleep(2)
+    # time.sleep(1)
