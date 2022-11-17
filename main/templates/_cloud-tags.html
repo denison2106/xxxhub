@@ -1,12 +1,15 @@
+{% load cache %}
 {% load fullurl %}
 {% load replace %}
 {% block cloud-tags %}
                         <div class="row cloud d-inline-block">
                             <h3 class="text-white fs-5 fw-light mt-2 mb-0">Cloud Search Tags</h3>
                             <div class="ms-1 mt-1">
+                                {% cache 172800 cloud_tags rows.id page request.get_host %}
                                 {% for tag in cloud_tags %}
-                                <span class="cloud-tag"><a href="{% fullurl 'tag' tag.id tag.title|lower|replace:" |-"|replace:"/| " %}" title="{{ tag.title }}">{{ tag.title }}</a></span>
+                                <span class="cloud-tag"><a href="{{ network|random }}{% url 'tag' tag.id tag.title|lower|replace:" |-"|replace:"/| " %}" title="{{ tag.title }}">{{ tag.title }}</a></span>
                                 {% endfor %}
+                                {% endcache %}
                             </div>
                         </div>
 {%  endblock %}

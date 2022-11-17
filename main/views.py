@@ -19,6 +19,7 @@ class HomeView(ListView):
         context = super().get_context_data(**kwargs)
         # context['title'] = settings.HOME_TITLE
         context['title'] = self.request.META['HTTP_HOST']
+        context['network'] = ['','']
         context['cloud_tags'] = XxxHub.objects.raw(f"SELECT * FROM main_xxxhub ORDER BY RAND() LIMIT 20")
         return context
 
@@ -42,6 +43,7 @@ class TagView(DetailView):
         options = 'OPTION ranker=sph04, max_matches=8'
         context['description'] = f''
         # context['keywords'] = ''
+        context['network'] = ['https://bighole.online', 'https://x-fantasy.online', 'https://xxxrest.online',]
         context['related_rows'] = XxxHub.objects.raw(f"SELECT * FROM main_xxxhub WHERE MATCH('\"{query}\"/0.1') AND id<>{self.object.pk} AND status=1 LIMIT 8 {options}")
         context['cloud_tags'] = XxxHub.objects.raw(f"SELECT * FROM main_xxxhub WHERE id < {self.object.pk} ORDER BY id DESC LIMIT 10")
         return context
