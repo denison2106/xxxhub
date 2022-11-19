@@ -24,7 +24,7 @@ class HomeView(ListView):
         return context
 
     def get_queryset(self):
-        where = f"status = 1 ORDER BY id DESC"
+        where = f"status = 1 ORDER BY date DESC"
         # return CandyModel.objects.all().filter(adult=1).order_by('-pk')
         return XxxHub.objects.raw(f"SELECT * FROM {settings.MANTICORE_DATABASE_NAME} "
                                                        f"WHERE {where} "

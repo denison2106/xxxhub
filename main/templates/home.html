@@ -2,6 +2,7 @@
 {% load static %}
 {% load fullurl %}
 {% load replace %}
+{% load timestamp_to_time %}
 
 {% block title %}{{ title }}{% endblock title %}
 
@@ -15,7 +16,7 @@
                                     <img src="{% static 'img/loading.jpg' %}" data-src="{{ row.image }}" class="lazyload" alt="{{ row.title|capfirst }}">
                                     <div class="col-title">
                                         <h6 class="m-0 thumb-title">{{ row.title|capfirst }}</h6>
-                                        <p class="fw-light text-white domain-title m-0">{{ row.date }}</p>
+                                        <p class="fw-light text-white domain-title m-0">{{ row.date|timestamp_to_time|date:"jS N Y" }}</p>
                                     </div>
                                 </a>
                             </div>
