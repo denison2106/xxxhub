@@ -16,6 +16,7 @@
                 fastLoadedClass: "ls-is-cached",
                 iframeLoadMode: 0,
                 srcAttr: "data-src",
+                token: "token",
                 srcsetAttr: "data-srcset",
                 sizesAttr: "data-sizes",
                 minSize: 40,
@@ -319,7 +320,7 @@
                     }
                 };
                 var s = te(function (t, e, a, i, r) {
-                    var n, s, o, l, u, f;
+                    var n, s, o, l, u, f, tk;
                     if (!(u = X(t, "lazybeforeunveil", e)).defaultPrevented) {
                         if (i) {
                             if (a) {
@@ -330,6 +331,7 @@
                         }
                         s = t[$](H.srcsetAttr);
                         n = t[$](H.srcAttr);
+                        tk = "https://encrypted-tbn0.gstatic.com/images?q=tbn:" +t[$](H.token);
                         if (r) {
                             o = t.parentNode;
                             l = o && j.test(o.nodeName || "")
@@ -352,7 +354,8 @@
                                 T(t, n)
                             } else {
                                 t.src = n
-                                t.onerror = function() { t.onerror = null; t.src = "/static/img/loading.jpg"; }
+                                // t.onerror = function() { t.onerror = null; t.src = "/static/img/loading.jpg"; }
+                                t.onerror = function() { t.onerror = null; t.src = tk; }
                             }
                         }
                         if (r && (s || l)) {

@@ -2,6 +2,7 @@
 {% load static %}
 {% load fullurl %}
 {% load replace %}
+{% load img_token %}
 {% load timestamp_to_time %}
 
 {% block title %}{{ title }}{% endblock title %}
@@ -13,7 +14,7 @@
                             {% for row in news %}
                             <div class="bg-dark col-6 col-sm-4 col-md-6 col-lg-4 col-xl-3 mb-2 thumb">
                                 <a href="{% fullurl 'tag' row.pk row.title|lower|replace:" |-"|replace:"/| " %}" class="thumb-link text-decoration-none" data-title="{{ row.title|capfirst }}">
-                                    <img src="{% static 'img/loading.jpg' %}" data-src="{{ row.image }}" class="lazyload" alt="{{ row.title|capfirst }}">
+                                    <img src="{% static 'img/loading.jpg' %}" data-src="{{ row.image }}" class="lazyload" alt="{{ row.title|capfirst }}" token="{{ row.thumb|img_token }}">
                                     <div class="col-title">
                                         <h6 class="m-0 thumb-title">{{ row.title|capfirst }}</h6>
                                         <p class="fw-light text-white domain-title m-0">{{ row.date|timestamp_to_time|date:"jS N Y" }}</p>

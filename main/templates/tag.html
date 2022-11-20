@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load replace %}
+{% load img_token %}
 
 {% block title %}{{ rows.title|capfirst }}{% endblock title %}
 {% block description %}{% for row in rows.cse.content %}{% if forloop.counter <= 2 %}{{ row.title|lower|capfirst|replace_title }}. {% endif %}{% endfor %}{% endblock description %}
@@ -14,7 +15,7 @@
                             {% for row in rows.cse.content %}
                             <div class="bg-dark col-6 col-sm-4 col-md-6 col-lg-4 col-xl-3 mb-2 thumb">
                                 <a href="{{ row.url }}" rel="nofollow" target="_blank" class="thumb-link text-decoration-none" data-title="{{ row.title|capfirst }}">
-                                    <img src="{% static 'img/loading.jpg' %}" data-src="{{ row.image|replace:"http://|https://" }}" class="lazyload" alt="{{ row.title|capfirst }}">
+                                    <img src="{% static 'img/loading.jpg' %}" data-src="{{ row.image }}" class="lazyload" alt="{{ row.title|capfirst }}" token="{{ row.thumb|img_token }}">
                                     <div class="col-title">
                                         <h6 class="m-0 thumb-title">{{ row.title|capfirst }}</h6>
                                         <p class="fw-light text-white domain-title m-0">{{ row.domain|replace:"www.|" }}</p>
