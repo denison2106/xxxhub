@@ -169,13 +169,12 @@ def res(tag):
 
 
 def proxy_list():
-    file_proxy = open("prx_list.txt", "r")
+    file_proxy = open("proxy.txt", "r")
     proxy = []
     while True:
         line = file_proxy.readline()
-        if not line or '#' in line:
-            break
-        proxy.append(line.replace('\n', ''))
+        if line or '#' not in line:
+            proxy.append(line.replace('\n', ''))
     file_proxy.close
     return proxy
 
