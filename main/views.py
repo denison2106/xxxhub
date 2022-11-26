@@ -76,7 +76,6 @@ class PostSitemap(Sitemap):
     priority = 0.9
 
     def items(self):
-        # return XxxHub.objects.filter(status=1).order_by('-pk')
         where = f"status=1 ORDER BY date DESC "
         limit = 10000
         options = f'OPTION max_matches=10000'
