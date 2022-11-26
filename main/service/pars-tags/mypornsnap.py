@@ -25,7 +25,7 @@ def set_tag(tag):
 
 
 def proxy_len():
-    file_proxy = open("../prx_list.txt", "r")
+    file_proxy = open("../proxy.txt", "r")
     i = 0
     while True:
         line = file_proxy.readline()
@@ -36,7 +36,7 @@ def proxy_len():
 
 
 def proxy_pars(number):
-    file_proxy = open("../prx_list.txt", "r")
+    file_proxy = open("../proxy.txt", "r")
     proxy = dict()
     i = 0
     while True:

@@ -76,7 +76,14 @@ class PostSitemap(Sitemap):
     priority = 0.9
 
     def items(self):
-        return XxxHub.objects.filter(status=1).order_by('-pk')
+        # return XxxHub.objects.filter(status=1).order_by('-pk')
+        where = f"status=1 ORDER BY date DESC "
+        limit = 10000
+        options = f'OPTION max_matches=10000'
+        return XxxHub.objects.raw(
+            f"SELECT * FROM {settings.MANTICORE_DATABASE_NAME} "
+            f"WHERE {where}"
+            f"LIMIT {limit} {options}")
 
     # def lastmod(self, item):
     #     return item.datetime
